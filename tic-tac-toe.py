@@ -1,38 +1,37 @@
 import os
-def check_for_winner(list_0,list_1,list_2,sign):
+def check_for_winner(listXO,sign):
+    print('checking for possible',sign,'match')
     #checking if match was achieved
-
-    #checking all columns
-    if list_0[0]==list_1[0]==list_2[0]==sign:
-        return('1st column matches!')
-    elif list_0[1]==list_1[1]==list_2[1]==sign:
-        return('2nd column matches!')
-    elif list_0[2]==list_1[2]==list_2[2]==sign:
-        return('3rd column matches!')
-    #checking rows
-    elif list_0[0]==list_0[1]==list_0[2]==sign:
-        return('1st row matches!')
-    elif list_1[0]==list_1[1]==list_1[2]==sign:
-        return('2nd row matches!')
-    elif list_2[0]==list_2[1]==list_2[2]==sign:
-        return('3rd row matches!')
+    #checking all rows
+    if listXO[0][0]==listXO[0][1]==listXO[0][2]=='X':
+        print('1st row matches!')
+        return(True)
+    elif listXO[1][0]==listXO[1][1]==listXO[1][2]==sign:
+        print('2nd row matches!')
+        return(True)
+    elif listXO[2][0]==listXO[2][1]==listXO[2][2]==sign:
+        print('3rd row matches!')
+        return(True)
+    #checking columns
+    elif listXO[0][0]==listXO[1][0]==listXO[2][0]==sign:
+        print('1st column matches!')
+        return(True)
+    elif listXO[0][1]==listXO[1][1]==listXO[2][1]==sign:
+        print('2nd column matches!')
+        return(True)
+    elif listXO[0][2]==listXO[1][2]==listXO[2][2]==sign:
+        print('3rd column matches!')
+        return(True)
     #checking diagonals
-    elif list_0[0]==list_1[1]==list_2[2]==sign:
-        return('1st diagonal matches!')
-    elif list_2[0]==list_1[1]==list_0[2]==sign:
-        return('2nd diagonal matches!')
+    elif listXO[0][0]==listXO[1][1]==listXO[2][2]==sign:
+        print('1st diagonal matches!')
+        return(True)
+    elif listXO[0][2]==listXO[1][1]==listXO[2][0]==sign:
+        print('2nd diagonal matches!')
+        return(True)
     else:
-        return('No match found!')
-def initialize(list_0,list_1,list_2):
-    for i in range(3):
-        list_0.append('-')
-        list_1.append('-')
-        list_2.append('-')
-def display(list_0,list_1,list_2):
-    #print(list_0,'\n',list_1,'\n',list_2,'\n')
-    print(list_0)
-    print(list_1)
-    print(list_2)
+        print('No match found!')
+        return(False)
 def game_on():
     choice=input('Do you want to continue playing?\nAnswer(Y/N):')
 
@@ -62,25 +61,85 @@ def check_if_position_is_occupied(listXO,x,y):
         return(False)
     else:
         return(True)
-def initialize_multi(listXO):
-    init=['-','-','-']
-    for i in range(3):
-        listXO.append(init)
+def initialize_multi():
+    listXO=[ ['-','-','-'] for emptyList in range(3) ]
+    return(listXO)
+    # for row  in range(len(listXO)):
+    #     for column in range(3):
+    #         listXO[row][column]='-'
 def display_multi(listXO):
     for row in listXO:
         print (row)
+def validate_coordinates_content(listXO,x,y):
+    # print('-----')
+    # print(listXO[x][y])
+    if listXO[x][y] == '-':
+        return True
+    else:
+        return False
+def replace_multi(listXO,x,y,sign):
+    x=int(x)
+    y=int(y)
+    listXO[x][y]=sign
 
-
-list_0=[]
-list_1=[]
-list_2=[]
-
-listXO=[]
+#listXO=[[],[],[]]
+# mylist=[ ['-','-','-'] for emptyList in range(3) ]
+# mylist[0][0]='test'
+# mylist=[ ['-','-','-'] for emptyList in range(3) ]
+# print(mylist)
 
 gameon=True
 c=0
 x=-1
 y=-1
 
-initialize_multi(listXO)
-display_multi(listXO)
+
+listXO=initialize_multi()
+#display_multi(listXO)
+#exit()
+while gameon:
+    os.system('cls')
+    print('Game status:')
+    display_multi(listXO)
+    
+#Player X
+    print('Player X\'s turn')
+    x,y=get_coordinates()
+
+    while validate_coordinates_content(listXO,x,y)==False:
+        print('Coordinates already occupied. Please enter a new set.')
+        x,y=get_coordinates()
+    
+    replace_multi(listXO,x,y,'X')
+    display_multi(listXO)
+
+    if check_for_winner(listXO, 'X') == True:
+        print("Congratulations 'X', you won!")
+        if game_on() == True:
+            print('Initializing game...')
+            listXO=initialize_multi()
+        else:
+            break
+
+
+#Player O
+    os.system('cls')
+    print('Game status:')
+    display_multi(listXO)
+    print('Player O\'s turn')
+    x,y=get_coordinates()
+
+    while validate_coordinates_content(listXO,x,y)==False:
+        print('Coordinates already occupied. Please enter a new set.')
+        x,y=get_coordinates()
+    
+    replace_multi(listXO,x,y,'O')
+    display_multi(listXO)
+
+    if check_for_winner(listXO, 'O') == True:
+        print("Congratulations 'O', you won!")
+        if game_on() == True:
+            print('Initializing game...')
+            listXO=initialize_multi()    
+        else:
+            break
