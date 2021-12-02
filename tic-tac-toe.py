@@ -62,7 +62,7 @@ def check_if_position_is_occupied(listXO,x,y):
     else:
         return(True)
 def initialize_multi():
-    listXO=[ ['-','-','-'] for emptyList in range(3) ]
+    listXO=[ [ '-' for initCharacter in range(3) ] for emptyList in range(3) ]
     return(listXO)
     # for row  in range(len(listXO)):
     #     for column in range(3):
@@ -85,9 +85,9 @@ def replace_multi(listXO,x,y,sign):
 #listXO=[[],[],[]]
 # mylist=[ ['-','-','-'] for emptyList in range(3) ]
 # mylist[0][0]='test'
-# mylist=[ ['-','-','-'] for emptyList in range(3) ]
+#mylist=[ ['-' for null in range(3)] for emptyList in range(3) ]
 # print(mylist)
-
+# exit()
 gameon=True
 c=0
 x=-1
